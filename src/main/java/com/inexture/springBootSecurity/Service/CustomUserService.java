@@ -1,33 +1,30 @@
-package com.inexture.springBootSecurity.Model;
+package com.inexture.springBootSecurity.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import com.inexture.springBootSecurity.Model.CustomUserDetails;
+import com.inexture.springBootSecurity.Model.UserBean;
 import com.inexture.springBootSecurity.Repo.AddressDaoInterface;
 import com.inexture.springBootSecurity.Repo.AdminDaoInterface;
 import com.inexture.springBootSecurity.Repo.UserDaoInterface;
 
-
-
-@Service
+@Component
 public class CustomUserService implements UserDetailsService {
 
 	@Autowired
 	UserDaoInterface userDaoInterface;
 
-	@Autowired
-	AddressDaoInterface addressDaoInterface;
-
-	@Autowired
-	AdminDaoInterface adminDaoInterface;
-
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserBean ubean = userDaoInterface.getUserEmail(email);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		UserBean ubean = userDaoInterface.getUserEmail(username);
+	
 		return new CustomUserDetails(ubean);
+
 	}
 
 }

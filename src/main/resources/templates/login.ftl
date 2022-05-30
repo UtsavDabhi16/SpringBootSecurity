@@ -18,20 +18,20 @@
 		<div class="container-login100">
 			<div class="wrap-login100">
 				<form class="login100-form  p-l-55 p-r-55 p-t-178" name="userlogin"
-					method="get" action="loginController">
+					method="post" action="/login">
 					<span class="login100-form-title"> Sign In </span>
 
 
 					<div class="wrap-input100 validate-input m-b-16"
 						data-validate="Please enter username">
-						<input class="input100" type="text" name="uemail" 
+						<input class="input100" type="text" name="username" 
 							placeholder="Enter Your Email"> <span id="emailerror"
 							style="color: red"></span>
 					</div>
 
 					<div class="wrap-input100 validate-input"
 						data-validate="Please enter password">
-						<input class="input100" type="password" name="upassword"
+						<input class="input100" type="password" name="password"
 							 placeholder="Password"> <span
 							id="passworderror" style="color: red"></span>
 					</div>

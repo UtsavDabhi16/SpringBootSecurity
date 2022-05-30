@@ -59,6 +59,17 @@ public class UserBean implements Serializable {
 	@NotEmpty(message = "New password")
 	@Expose
 	private String NewPassword;
+	@NotEmpty(message = "User Role")
+	@Expose
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<AddressBean> address;
@@ -201,5 +212,7 @@ public class UserBean implements Serializable {
 	public void setAssign(List<AssignBean> assign) {
 		this.assign = assign;
 	}
+
+	
 
 }

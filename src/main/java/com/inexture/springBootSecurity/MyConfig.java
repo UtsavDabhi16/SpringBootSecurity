@@ -12,47 +12,56 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.inexture.springBootSecurity.Model.CustomUserService;
-
-
+import com.inexture.springBootSecurity.Service.CustomUserService;
 
 @Configuration
 @EnableWebSecurity
-public class MyConfig extends WebSecurityConfigurerAdapter  {
-    
+public class MyConfig extends WebSecurityConfigurerAdapter {
+
 	@Autowired
 	CustomUserService customUserService;
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.authorizeHttpRequests()
-		.antMatchers("/","/views/**").permitAll()
-		.antMatchers("/").hasRole("ADMIN")
+	
+		http
+		.csrf().disable()
+		.authorizeRequests()
+		.antMatchers("/", "/views/**").permitAll()
+		.antMatchers("/page","/admin").permitAll()
+//		.antMatchers("/").hasRole("ADMIN")
+		.antMatchers("/").hasRole("USER")
 		.anyRequest()
 		.authenticated()
 		.and()
 		.formLogin()
 		.loginPage("/")
-		.usernameParameter("uemail")
-		.passwordParameter("upassword")
-		.loginProcessingUrl("/register")
-		.defaultSuccessUrl("admin");
-			
+//		.usernameParameter("uemail")
+//		.passwordParameter("upassword")
+		.loginProcessingUrl("/login")
+		.defaultSuccessUrl("/admin").permitAll();
+
 	}
-	 
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(customUserService).passwordEncoder(passwordEncoder());
-	auth.inMemoryAuthentication().withUser("admin").password(this.passwordEncoder().encode("admin")).roles("ADMIN");
+		auth.userDetailsService(userDetailsServiceBean()).passwordEncoder(passwordEncoder());
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-//		return NoOpPasswordEncoder.getInstance();
-		return new BCryptPasswordEncoder();
+		return NoOpPasswordEncoder.getInstance();
+		
+//		return new BCryptPasswordEncoder();
+	}
+
+	@Override
+	public UserDetailsService userDetailsServiceBean() {
+	
+		return customUserService;
 	}
 
 }
